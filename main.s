@@ -5,7 +5,7 @@ extrn	LCD_Setup, LCD_Write_Message
 	
 psect	udata_acs   ; reserve data space in access ram
 counter:    ds 1    ; reserve one byte for a counter variable
-delay_count:ds 1    ; reserve one byte for counter in the delay routine
+delay_count:ds 1    ; reserve one byte for counter in the delay routine k
     
 psect	udata_bank4 ; reserve data anywhere in RAM (here at 0x400)
 myArray:    ds 0x80 ; reserve 128 bytes for message data
