@@ -52,62 +52,63 @@ sleep_loop:
     
 Combo_tests: ; iteratively go through each of the 16 combinations until the value in the keyval register matches with the one being tested
     movlw 0xFF ; i.e. if no value has been pressed, stay within this loop until no longer true 
-    cpfseq keyval, A ;
-    bra
+    cpfseq keyval, A ; compare value in keyval with W, store result in A
+    bra test_0 ; move on to next test if not equal
+    retlw 0x00; clear W
     
-    
-    
-;Keypad subroutine 
-/*
-Chk_Keys:   	
-		movlw   0x00         	;wait until no key pressed 
-      		movwf   KEY_PORT      	;set all output pins low 
-      		movf   	KEY_PORT,   W 
-      		andlw   0x0F         	;mask off high byte 
-      		sublw   0x0F 
-      		btfsc   STATUS, Z      	;test if any key pressed 
-      		goto   	Keys         	;if none, read keys 
-      		call   	Delay20 
-      		goto   	Chk_Keys      	;else try again 
+test_0: ;0111 0111
+    movlw 0x77 ; CHECK
+    cpfseq keyval, A 
+    bra test_1
+    retlw 0x77 ; REPLACE WITH APPROPRIATE ASCII CHARACTER!
 
-Keys:        	
-		call    Scan_Keys 
-            	movlw   0x10         	;check for no key pressed 
-            	subwf   key, w 
-            	btfss   STATUS, Z 
-            	goto    Key_Found 
-      		call   	Delay20 
-      		goto   	Keys 
-		
-Key_Found:   	
-		movf    key, w 
-      		andlw   0x0f 
-      		call   	Key_Table      	;lookup key in table    
-      		movwf   key         	;save back in key 
-      		return            	;key pressed now in W 
+test_1: ;0111 1011
+    movlw 0x7B ; CHECK
+    cpfseq keyval, A 
+    bra test_2
+    retlw 0x7B;REPLACE WITH APPROPRIATE ASCII CHARACTER!
 
-Scan_Keys:   	
-		clrf    key 
-      		movlw   0xF0         	;set all output lines high 
-            	movwf   KEY_PORT 
-            	movlw   0x04 
-            	movwf   rows         	;set number of rows 
-            	bcf     STATUS, C      	;put a 0 into carry 
-Scan        	rrf     KEY_PORT, f 
-            	bsf     STATUS, C      	;follow the zero with ones 
-;comment out next two lines for 4x3 numeric keypad. 
-            	btfss   KEY_PORT, Col4 
-            	goto    Press 
-            	incf    key, f 
-            	btfss   KEY_PORT, Col3 
-            	goto    Press 
-            	incf    key, f 
-            	btfss   KEY_PORT, Col2 
-            	goto    Press 
-            	incf    key, f 
-            	btfss   KEY_PORT, Col1 
-            	goto    Press 
-            	incf    key, f 
-            	decfsz  rows, f 
-            	goto    Scan 
-Press       	return */
+test_2: ;0111 1101
+    movlw 0x7D ; CHECK
+    cpfseq keyval, A 
+    bra test_3
+    retlw 0x7D ; REPLACE WITH APPROPRIATE ASCII CHARACTER!
+
+test_3: ;0111 1110
+    movlw 0x7E ; CHECK
+    cpfseq keyval, A 
+    bra test_4
+    retlw 0x7E ; REPLACE WITH APPROPRIATE ASCII CHARACTER!
+
+test_4: ;1011 0111
+    movlw 0xB7 ; CHECK
+    cpfseq keyval, A 
+    bra test_5
+    retlw 0xB7 ; REPLACE WITH APPROPRIATE ASCII CHARACTER!
+    
+test_5: ;0111 1011
+    movlw 0xBB ; CHECK
+    cpfseq keyval, A 
+    bra test_6
+    retlw 0xBB ; REPLACE WITH APPROPRIATE ASCII CHARACTER!
+    
+test_6: ;0111 1101
+    movlw 0xBD ; CHECK
+    cpfseq keyval, A 
+    bra test_7
+    retlw 0xBD ; REPLACE WITH APPROPRIATE ASCII CHARACTER!
+
+test_7: ;0111 1110
+    movlw 0xBE ; CHECK
+    cpfseq keyval, A 
+    bra test_8
+    retlw 0xBE ; REPLACE WITH APPROPRIATE ASCII CHARACTER!
+
+test_8: ;1101 0111
+    movlw 0xD7 ; CHECK
+    cpfseq keyval, A 
+    bra test_1
+    retlw 0xD7 ; REPLACE WITH APPROPRIATE ASCII CHARACTER!
+    
+Write_LCD:
+    
